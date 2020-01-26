@@ -56,6 +56,9 @@ followersArray.forEach(item => {
 
     const newCard = createCard(response.data);
     cards.appendChild(newCard);
+  });
+  itemData.catch(error => {
+    console.log("error: ", error);
   })
 })
 
