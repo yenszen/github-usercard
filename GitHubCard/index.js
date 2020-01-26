@@ -24,8 +24,6 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
-
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -45,6 +43,82 @@ const followersArray = [];
 </div>
 
 */
+
+const data = axios.get("https://api.github.com/users/yenszen");
+
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
+
+followersArray.forEach(item => {
+  const itemData = axios.get(`https://api.github.com/users/${item}`);
+  itemData.then(response => {
+    console.log(itemData);
+    console.log("res", response);
+
+    const newCard = createCard(response.data);
+    cards.appendChild(newCard);
+  });
+  itemData.catch(error => {
+    console.log("error: ", error);
+  })
+})
+
+const createCard = (obj) => {
+  const card = document.createElement("div");
+  const image = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const name = document.createElement("h3");
+  const username = document.createElement("p");
+  const location = document.createElement("p");
+  const profile = document.createElement("p");
+  const address = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+  profile.appendChild(address);
+
+  // set class names
+  card.classList.add("card");
+  cardInfo.classList.add("card-info");
+  name.classList.add("name");
+  username.classList.add("username");
+
+  // add content
+  image.src = obj.avatar_url;
+  name.textContent = obj.name;
+  username.textContent = `GitHub username: ${obj.login}`;
+  location.textContent = `Located in: ${obj.location}`;
+  address.textContent = `GitHub link: ${obj.html_url}`;
+  followers.textContent = `GitHub followers count: ${obj.followers}`;
+  following.textContent = `GitHub following count: ${obj.following}`;
+  bio.textContent = `GitHub bio: ${obj.bio}`;
+
+  return card;
+}
+
+const cards = document.querySelector(".cards");
+
+data.then(response => {
+  console.log(data);
+  console.log("res", response);
+
+  const newCard = createCard(response.data);
+  cards.appendChild(newCard);
+});
+
+data.catch(error => {
+  console.log("error: ", error);
+});
 
 /* List of LS Instructors Github username's: 
   tetondan
