@@ -3,7 +3,7 @@
            https://api.github.com/users/<your name>
 */
 
-const axiosPromise = axios.get("https://api.github.com/users/yenszen");
+const data = axios.get("https://api.github.com/users/yenszen");
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -26,7 +26,7 @@ const axiosPromise = axios.get("https://api.github.com/users/yenszen");
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -82,18 +82,29 @@ const createCard = (obj) => {
   // add content
   image.src = obj.avatar_url;
   name.textContent = obj.name;
-  username.textContent = obj.login;
-  location.textContent = obj.location;
-  address.textContent = obj.html_url;
-  followers.textContent = obj.followers;
-  following.textContent = obj.following;
-  bio.textContent = obj.bio;
+  username.textContent = `GitHub username: ${obj.login}`;
+  location.textContent = `Located in: ${obj.location}`;
+  address.textContent = `GitHub link: ${obj.html_url}`;
+  followers.textContent = `GitHub followers count: ${obj.followers}`;
+  following.textContent = `GitHub following count: ${obj.following}`;
+  bio.textContent = `GitHub bio: ${obj.bio}`;
 
   return card;
 }
 
 const cards = document.querySelector(".cards");
-cards.appendChild(createCard());
+
+data.then(response => {
+  console.log(data);
+  console.log("res", response);
+
+  const newCard = createCard(response.data);
+  cards.appendChild(newCard);
+});
+
+data.catch(error => {
+  console.log("error: ", error);
+});
 
 /* List of LS Instructors Github username's: 
   tetondan
